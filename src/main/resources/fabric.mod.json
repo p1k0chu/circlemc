@@ -1,0 +1,28 @@
+{
+	"schemaVersion": 1,
+	"id": "circlemc",
+	"version": "${version}",
+	"name": "CircleMC",
+	"description": "Advancement Trees? no! its circles!",
+	"authors": [
+		"p1k0chu"
+	],
+	"contact": {
+	},
+	"license": "MIT",
+	"icon": "assets/circlemc/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.github.p1k0chu.circlemc.CircleMC"
+		]
+	},
+	"mixins": [
+		"circlemc.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=${loader_version}",
+		"minecraft": "~${minecraft_version}",
+		"java": ">=21"
+	}
+}
