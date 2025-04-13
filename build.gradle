@@ -1,4 +1,5 @@
 plugins {
+    id("com.modrinth.minotaur") version "2.+"
     id 'fabric-loom' version '1.10-SNAPSHOT'
 }
 
@@ -56,5 +57,25 @@ jar {
 
     from("LICENSE") {
         rename { "${it}_${inputs.properties.archivesName}" }
+    }
+}
+
+// build.gradle.kts
+modrinth {
+    token = System.getenv("MODRINTH_TOKEN")
+
+    projectId = "x1EhUO21"
+    syncBodyFrom = rootProject.file("README.md").text
+
+    versionNumber = "${mod_version}"
+    versionType = "release"
+
+    uploadFile = tasks.remapJar
+
+    gameVersions = ["${minecraft_version}"]
+
+    loaders = ["fabric"]
+
+    dependencies {
     }
 }
