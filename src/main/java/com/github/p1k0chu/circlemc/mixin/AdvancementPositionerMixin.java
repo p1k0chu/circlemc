@@ -21,17 +21,13 @@ public abstract class AdvancementPositionerMixin implements IAdvancementPosition
 
     @Inject(method = "method_53710", at = @At("HEAD"), cancellable = true)
     void applyPosition(AdvancementDisplay display, CallbackInfo ci) {
-        final float MIN_ROWS_IN_360 = 8f;
         final float DISTANCE_IN_DEPTH = 1.4f;
         final double RADIAN_360 = 2.0 * Math.PI;
 
-        final AdvancementPositioner root = circlemc$getRoot();
-        final float maxRow = ((IAdvancementPositioner) root).circlemc$findMaxRowRecursively(Float.NEGATIVE_INFINITY);
-        final float minRow = ((IAdvancementPositioner) root).circlemc$findMinRowRecursively(Float.POSITIVE_INFINITY);
+        final IAdvancementPositioner root = (IAdvancementPositioner) circlemc$getRoot();
 
-        float rowsIn360 = maxRow - minRow;
-
-        if (rowsIn360 < MIN_ROWS_IN_360) rowsIn360 = MIN_ROWS_IN_360;
+        // plus one because full 360 comes back and overlaps
+        final float rowsIn360 = root.circlemc$findMaxRowRecursively(Float.NEGATIVE_INFINITY) + 1;
 
         final float x = (float) Math.cos(RADIAN_360 * row / rowsIn360) * depth * DISTANCE_IN_DEPTH;
         final float y = (float) Math.sin(RADIAN_360 * row / rowsIn360) * depth * DISTANCE_IN_DEPTH;
