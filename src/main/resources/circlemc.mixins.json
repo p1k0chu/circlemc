@@ -1,12 +1,15 @@
 {
-	"required": true,
-	"package": "com.github.p1k0chu.circlemc.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-		"AdvancementPositionerAccessor",
-		"AdvancementPositionerMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	}
+  "required": true,
+  "package": "com.github.p1k0chu.circlemc.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "AdvancementPositionerAccessor",
+    "AdvancementPositionerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "AdvancementTabMixin"
+  ]
 }
