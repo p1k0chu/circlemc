@@ -28,10 +28,10 @@ public abstract class AdvancementPositionerMixin implements IAdvancementPosition
         float minRow = ((IAdvancementPositioner)root).circlemc$findMinRowRecursively(Float.POSITIVE_INFINITY);
 
         float deltaRow = maxRow - minRow;
-        if(deltaRow < 10f) deltaRow = 10f;
+        if (deltaRow < 8f) deltaRow = 8f;
 
-        float x = (float) Math.cos(2 * Math.PI * row / deltaRow) * depth / 2;
-        float y = (float) Math.sin(2 * Math.PI * row / deltaRow) * depth / 2;
+        float x = (float) Math.cos(2 * Math.PI * row / deltaRow) * depth * 1.4f;
+        float y = (float) Math.sin(2 * Math.PI * row / deltaRow) * depth * 1.4f;
 
         display.setPos(x, y);
         ci.cancel();
