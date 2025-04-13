@@ -4,6 +4,7 @@ import com.github.p1k0chu.circlemc.IAdvancementPositioner;
 import net.minecraft.advancement.AdvancementDisplay;
 import net.minecraft.advancement.AdvancementPositioner;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,6 +19,14 @@ public abstract class AdvancementPositionerMixin implements IAdvancementPosition
 
     @Shadow
     private float row;
+
+    @Shadow
+    @Nullable
+    protected abstract AdvancementPositioner getLastChild();
+
+    @Shadow
+    @Nullable
+    protected abstract AdvancementPositioner getFirstChild();
 
     @Inject(method = "method_53710", at = @At("HEAD"), cancellable = true)
     void applyPosition(AdvancementDisplay display, CallbackInfo ci) {
@@ -55,8 +64,9 @@ public abstract class AdvancementPositionerMixin implements IAdvancementPosition
             maxRow = this.row;
         }
 
-        for (AdvancementPositioner advPos : ((AdvancementPositionerAccessor) this).getChildren()) {
-            maxRow = ((IAdvancementPositioner) advPos).circlemc$findMaxRowRecursively(maxRow);
+        final var lastChild = this.getLastChild();
+        if (lastChild != null) {
+            maxRow = ((IAdvancementPositioner) lastChild).circlemc$findMaxRowRecursively(maxRow);
         }
 
         return maxRow;
@@ -68,8 +78,9 @@ public abstract class AdvancementPositionerMixin implements IAdvancementPosition
             minRow = this.row;
         }
 
-        for (AdvancementPositioner advPos : ((AdvancementPositionerAccessor) this).getChildren()) {
-            minRow = ((IAdvancementPositioner) advPos).circlemc$findMinRowRecursively(minRow);
+        final var firstChild = this.getFirstChild();
+        if (firstChild != null) {
+            minRow = ((IAdvancementPositioner) firstChild).circlemc$findMinRowRecursively(minRow);
         }
 
         return minRow;
