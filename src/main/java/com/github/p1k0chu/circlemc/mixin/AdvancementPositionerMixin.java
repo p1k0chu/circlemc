@@ -23,15 +23,20 @@ public abstract class AdvancementPositionerMixin implements IAdvancementPosition
 
     @Inject(method = "method_53710", at = @At("HEAD"), cancellable = true)
     void applyPosition(AdvancementDisplay display, CallbackInfo ci) {
-        AdvancementPositioner root = circlemc$getRoot();
-        float maxRow = ((IAdvancementPositioner) root).circlemc$findMaxRowRecursively(Float.NEGATIVE_INFINITY);
-        float minRow = ((IAdvancementPositioner) root).circlemc$findMinRowRecursively(Float.POSITIVE_INFINITY);
+        final float MIN_ROWS_IN_360 = 8f;
+        final float DISTANCE_IN_DEPTH = 1.4f;
+        final double RADIAN_360 = 2.0 * Math.PI;
 
-        float deltaRow = maxRow - minRow;
-        if (deltaRow < 8f) deltaRow = 8f;
+        final AdvancementPositioner root = circlemc$getRoot();
+        final float maxRow = ((IAdvancementPositioner) root).circlemc$findMaxRowRecursively(Float.NEGATIVE_INFINITY);
+        final float minRow = ((IAdvancementPositioner) root).circlemc$findMinRowRecursively(Float.POSITIVE_INFINITY);
 
-        float x = (float) Math.cos(2 * Math.PI * row / deltaRow) * depth * 1.4f;
-        float y = (float) Math.sin(2 * Math.PI * row / deltaRow) * depth * 1.4f;
+        float rowsIn360 = maxRow - minRow;
+
+        if (rowsIn360 < MIN_ROWS_IN_360) rowsIn360 = MIN_ROWS_IN_360;
+
+        final float x = (float) Math.cos(RADIAN_360 * row / rowsIn360) * depth * DISTANCE_IN_DEPTH;
+        final float y = (float) Math.sin(RADIAN_360 * row / rowsIn360) * depth * DISTANCE_IN_DEPTH;
 
         display.setPos(x, y);
         ci.cancel();
@@ -49,7 +54,7 @@ public abstract class AdvancementPositionerMixin implements IAdvancementPosition
         AdvancementPositioner positioner = (AdvancementPositioner) (Object) this;
 
         while (true) {
-            AdvancementPositioner parent = ((AdvancementPositionerAccessor) positioner).getParent();
+            final AdvancementPositioner parent = ((AdvancementPositionerAccessor) positioner).getParent();
             if (parent == null) {
                 return positioner;
             }
