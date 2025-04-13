@@ -24,8 +24,8 @@ public abstract class AdvancementPositionerMixin implements IAdvancementPosition
     @Inject(method = "method_53710", at = @At("HEAD"), cancellable = true)
     void applyPosition(AdvancementDisplay display, CallbackInfo ci) {
         AdvancementPositioner root = circlemc$getRoot();
-        float maxRow = ((IAdvancementPositioner)root).circlemc$findMaxRowRecursively(Float.NEGATIVE_INFINITY);
-        float minRow = ((IAdvancementPositioner)root).circlemc$findMinRowRecursively(Float.POSITIVE_INFINITY);
+        float maxRow = ((IAdvancementPositioner) root).circlemc$findMaxRowRecursively(Float.NEGATIVE_INFINITY);
+        float minRow = ((IAdvancementPositioner) root).circlemc$findMinRowRecursively(Float.POSITIVE_INFINITY);
 
         float deltaRow = maxRow - minRow;
         if (deltaRow < 8f) deltaRow = 8f;
@@ -39,18 +39,18 @@ public abstract class AdvancementPositionerMixin implements IAdvancementPosition
 
     @Inject(method = "arrangeForTree", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/AdvancementPositioner;apply()V"))
     private static void setRootToOrigin(PlacedAdvancement root, CallbackInfo ci, @Local AdvancementPositioner positioner) {
-        float row = ((AdvancementPositionerAccessor)positioner).getRow();
+        float row = ((AdvancementPositionerAccessor) positioner).getRow();
 
-        ((AdvancementPositionerAccessor)positioner).invokeIncreaseRowRecursively(-row); // move root to origin...
+        ((AdvancementPositionerAccessor) positioner).invokeIncreaseRowRecursively(-row); // move root to origin...
     }
 
     @Override
     public @NotNull AdvancementPositioner circlemc$getRoot() {
-        AdvancementPositioner positioner = (AdvancementPositioner) (Object)this;
+        AdvancementPositioner positioner = (AdvancementPositioner) (Object) this;
 
-        while(true) {
+        while (true) {
             AdvancementPositioner parent = ((AdvancementPositionerAccessor) positioner).getParent();
-            if(parent == null) {
+            if (parent == null) {
                 return positioner;
             }
             positioner = parent;
@@ -59,11 +59,11 @@ public abstract class AdvancementPositionerMixin implements IAdvancementPosition
 
     @Override
     public float circlemc$findMaxRowRecursively(float maxRow) {
-        if(this.row > maxRow) {
+        if (this.row > maxRow) {
             maxRow = this.row;
         }
 
-        for(AdvancementPositioner advPos : ((AdvancementPositionerAccessor)this).getChildren()) {
+        for (AdvancementPositioner advPos : ((AdvancementPositionerAccessor) this).getChildren()) {
             maxRow = ((IAdvancementPositioner) advPos).circlemc$findMaxRowRecursively(maxRow);
         }
 
@@ -72,11 +72,11 @@ public abstract class AdvancementPositionerMixin implements IAdvancementPosition
 
     @Override
     public float circlemc$findMinRowRecursively(float minRow) {
-        if(this.row < minRow) {
+        if (this.row < minRow) {
             minRow = this.row;
         }
 
-        for(AdvancementPositioner advPos : ((AdvancementPositionerAccessor)this).getChildren()) {
+        for (AdvancementPositioner advPos : ((AdvancementPositionerAccessor) this).getChildren()) {
             minRow = ((IAdvancementPositioner) advPos).circlemc$findMinRowRecursively(minRow);
         }
 
