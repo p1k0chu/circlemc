@@ -17,11 +17,5 @@ public interface AdvancementPositionerAccessor {
     @Accessor("children")
     List<AdvancementPositioner> getChildren();
 
-    @Accessor
-    int getDepth();
-    @Accessor
-    float getRow();
 
-    @Invoker("increaseRowRecursively")
-    void invokeIncreaseRowRecursively(float deltaRow);
 }
